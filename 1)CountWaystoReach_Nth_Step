@@ -1,0 +1,69 @@
+
+CodeStudio Problem Link - https://www.codingninjas.com/codestudio/problems/count-ways-to-reach-nth-stairs
+
+1) Recursion : 
+Gives TLE.
+void rec(int &ans, int n, int i)
+{
+    if(i>n)
+    {
+        return ;
+    }
+    if(n==i)
+    {
+        //cout<<n<<" "<<i<<endl;
+        ans++;
+        return ;
+    }
+    
+    rec(ans,n,i+1);
+    rec(ans,n,i+2);
+}
+
+int countDistinctWays(int n) {
+    int ans=0;
+    rec(ans,n,0);
+    return ans;
+}
+
+2) Memoization :
+int rec(vector<int>& dp, int n)
+{
+    if(n==0 || n==1)
+    {
+        return 1;
+    }
+    if(dp[n]!=-1)
+    {
+        return dp[n];
+    }
+    return dp[n]=(rec(dp,n-1)+rec(dp, n-2))%1000000007;
+}
+
+int countDistinctWays(long long n) {
+    vector<int> dp(n+1,-1);
+    return rec(dp,n);
+}
+
+3) Tabulation :
+int countDistinctWays(int n) {
+    vector<int> dp(n+1,-1);
+    dp[0]=1,dp[1]=1;
+    for(int i=2;i<=n;i++)
+    {
+        dp[i]=(dp[i-1]+dp[i-2])%1000000007;
+    }
+   return dp[n]; 
+}
+
+4) Space Optimization :
+int countDistinctWays(int n) {
+   int prev=1,prev1=1;
+    for(int i=2;i<=n;i++)
+    {
+        int curr = (prev + prev1)%1000000007;
+        prev1=prev;
+        prev=curr;
+    }
+   return prev; 
+}
