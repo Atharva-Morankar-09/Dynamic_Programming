@@ -1,0 +1,95 @@
+
+CodeStudio Problem Link - https://www.codingninjas.com/codestudio/problems/frog-jump_3621012?leftPanelTab=0
+
+1) Recursion :
+Gives TLE 
+
+#include<bits/stdc++.h>
+int rec(int n, vector<int>& ht)
+{
+    if(n==0)
+    {
+        return 0;
+    }
+   int l = rec(n-1,ht) + abs(ht[n-1]-ht[n]);
+   int r = INT_MAX;
+    if(n>1)
+   {
+       r = rec(n-2,ht) + abs(ht[n-2]-ht[n]); 
+   }
+   return min(l,r);
+}
+
+int frogJump(int n, vector<int> &ht)
+{
+    return rec(n-1,ht);
+}
+
+2) Memoization : 
+
+#include<bits/stdc++.h>
+int rec(int n, vector<int>& ht, vector<int>& dp)
+{
+    if(n==0)
+    {
+        return 0;
+    }
+    if(dp[n]!=-1)
+    {
+        return dp[n];
+    }
+   int l = rec(n-1,ht,dp) + abs(ht[n-1]-ht[n]);
+   int r = INT_MAX;
+    if(n>1)
+   {
+       r = rec(n-2,ht,dp) + abs(ht[n-2]-ht[n]); 
+   }
+   return dp[n] = min(l,r);
+}
+
+int frogJump(int n, vector<int> &ht)
+{
+    vector<int> dp(n+1,-1);
+    return rec(n-1,ht,dp);
+}
+
+3) Tabulation : 
+
+#include<bits/stdc++.h>
+int frogJump(int n, vector<int> &ht)
+{
+    vector<int> dp(n+1);
+    dp[0]=0;
+    for(int i=1;i<n;i++)
+    {
+        int l = dp[i-1] + abs(ht[i-1] - ht[i]);
+        int r = INT_MAX;
+        if(i>1)
+        {
+            r = dp[i-2] + abs(ht[i-2] - ht[i]);
+        }
+       dp[i]=min(l,r); 
+    }
+   return dp[n-1]; 
+}
+
+4) Space Optimization : 
+
+#include<bits/stdc++.h>
+int frogJump(int n, vector<int> &ht)
+{
+    int prev=0,prev1=0;
+    for(int i=1;i<n;i++)
+    {
+        int first = prev + abs(ht[i-1] - ht[i]);
+        int second = INT_MAX;
+        if(i>1)
+        {
+            second = prev1 + abs(ht[i-2] - ht[i]);
+        }
+       int curr = min (first,second);
+       prev1=prev;
+       prev=curr; 
+    }
+   return prev; 
+}
