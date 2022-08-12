@@ -1,0 +1,127 @@
+
+CodeStudio - https://www.codingninjas.com/codestudio/problems/loot-houses_630510
+
+1) Memoization :
+
+#include<bits/stdc++.h>
+long long int rec(vector<long long int>& v, long long int n, vector<long long int>& dp)
+{
+   if(n==0)
+   {
+       return v[0];
+   }
+   if(n<0)
+   {
+       return 0;
+   }
+    
+   if(dp[n]!=-1)
+   {return dp[n];}
+    
+    long long int take = v[n] + rec(v,n-2,dp);
+    long long int notTake = 0 + rec(v,n-1,dp);
+    return dp[n]=max(take,notTake);
+}
+
+long long int houseRobber(vector<int>& valueInHouse)
+{
+    if(valueInHouse.size()==1){return valueInHouse[0];}
+    long long int n = valueInHouse.size();
+    vector<long long int> dp1(n+1,-1);
+    vector<long long int> dp2(n+1,-1);
+    vector<long long int> v1,v2;
+    for(int i=0;i<n;i++)
+    {
+        if(i!=0)
+        {
+            v1.push_back(valueInHouse[i]);
+        }
+        if(i!=n-1)
+        {
+            v2.push_back(valueInHouse[i]);
+        }
+    }
+   return max(rec(v1,n-2,dp1), rec(v2,n-2,dp2)); 
+    
+}
+
+2) Tabulation : 
+
+#include<bits/stdc++.h>
+long long int rec(vector<long long int>& v)
+{
+  int n=v.size();
+  vector<long long int> dp(n);
+  dp[0]=v[0];
+  for(int i=1;i<n;i++)
+  {
+      long long int take = v[i];
+      if(i>1)
+      {
+          take+=dp[i-2];
+      }
+      long long int notTake = dp[i-1];
+      dp[i]=max(take,notTake);
+  }
+   return dp[n-1]; 
+}
+
+long long int houseRobber(vector<int>& valueInHouse)
+{
+    if(valueInHouse.size()==1){return valueInHouse[0];}
+    long long int n = valueInHouse.size();
+    vector<long long int> v1,v2;
+    for(int i=0;i<n;i++)
+    {
+        if(i!=0)
+        {
+            v1.push_back(valueInHouse[i]);
+        }
+        if(i!=n-1)
+        {
+            v2.push_back(valueInHouse[i]);
+        }
+    }
+   return max(rec(v1), rec(v2));    
+}
+
+3) Space Optimization : 
+
+#include<bits/stdc++.h>
+long long int rec(vector<long long int>& v)
+{
+  long long int n=v.size();
+  long long int prev=v[0],prev1=0;
+  for(int i=1;i<n;i++)
+  {
+      long long int take = v[i];
+      if(i>1)
+      {
+          take+=prev1;
+      }
+      long long int notTake = prev;
+      long long int curr=max(take,notTake);
+      prev1=prev;
+      prev=curr;
+  }
+   return prev; 
+}
+
+long long int houseRobber(vector<int>& valueInHouse)
+{
+    if(valueInHouse.size()==1){return valueInHouse[0];}
+    long long int n = valueInHouse.size();
+    vector<long long int> v1,v2;
+    for(int i=0;i<n;i++)
+    {
+        if(i!=0)
+        {
+            v1.push_back(valueInHouse[i]);
+        }
+        if(i!=n-1)
+        {
+            v2.push_back(valueInHouse[i]);
+        }
+    }
+   return max(rec(v1), rec(v2));    
+}
