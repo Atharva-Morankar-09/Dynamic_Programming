@@ -14,11 +14,11 @@ public:
             {
                 if(i==0)
                 {
-                    dp[i][j]=false;
+                    dp[i][j]=false;                                 // Cant have subset with 0 numbers
                 }
                 if(j==0)
                 {
-                    dp[i][j]=true;
+                    dp[i][j]=true;                                  // Sum 0 can be done with empty set as it is a subset  
                 }
             }
         }
@@ -29,7 +29,7 @@ public:
             {
                 if(arr[i-1]<=j)
                 {
-                    dp[i][j] = dp[i-1][j-arr[i-1]] || dp[i-1][j];
+                    dp[i][j] = dp[i-1][j-arr[i-1]] || dp[i-1][j];             // Take & not take
                 }
                 else
                 {
