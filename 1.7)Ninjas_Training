@@ -1,0 +1,132 @@
+
+Ninjas Training - https://www.codingninjas.com/codestudio/problems/ninja-s-training_3621003
+
+1) Recursion :
+TLE 
+
+int rec(int day, int last, vector<vector<int>> &points)
+{
+    if(day==0)
+    {
+        int maxA = 0;
+        for(int i=0;i<3;i++)
+        {
+            if(i!=last)
+            {
+                maxA = max(maxA,points[0][i]); 
+            }
+        }
+       return maxA; 
+    }
+    
+    int maxA = 0;
+    for(int i=0;i<3;i++)
+    {
+        if(i!=last)
+        {
+            int pts = points[day][i] + rec(day-1,i,points);
+            maxA = max(maxA,pts);
+        }
+    }
+   return maxA; 
+}
+
+int ninjaTraining(int n, vector<vector<int>> &points)
+{
+    return rec(n-1,3,points);
+}
+
+2) Memoization :
+
+int rec(int day, int last, vector<vector<int>> &points, vector<vector<int>> &dp)
+{
+    if(day==0)
+    {
+        int maxA = 0;
+        for(int i=0;i<3;i++)
+        {
+            if(i!=last)
+            {
+                maxA = max(maxA,points[0][i]); 
+            }
+        }
+       return maxA; 
+    }
+    if(dp[day][last]!=-1)
+    {
+        return dp[day][last];
+    }
+    int maxA = 0;
+    for(int i=0;i<3;i++)
+    {
+        if(i!=last)
+        {
+            int pts = points[day][i] + rec(day-1,i,points,dp);
+            maxA = max(maxA,pts);
+        }
+    }
+   return dp[day][last] = maxA; 
+}
+
+int ninjaTraining(int n, vector<vector<int>> &points)
+{
+    vector<vector<int>> dp(n, vector<int> (4,-1));
+    return rec(n-1,3,points,dp);
+}
+
+3) Tabulation :
+
+int ninjaTraining(int n, vector<vector<int>> &points)
+{
+    vector<vector<int>> dp(n, vector<int> (4,0));
+    dp[0][0] = max(points[0][1], points[0][2]);
+    dp[0][1] = max(points[0][0], points[0][2]);
+    dp[0][2] = max(points[0][0], points[0][1]);
+    dp[0][3] = max(points[0][0], max(points[0][1], points[0][2]));
+    
+    for(int i=1;i<n;i++)
+    {
+        for(int l=0;l<4;l++)
+        {
+            dp[i][l]=0;
+            for(int t=0;t<3;t++)
+            {
+                if(l!=t)
+                {
+                    int pts = points[i][t] + dp[i-1][t];
+                    dp[i][l] = max(dp[i][l], pts);
+                }
+            }
+        }
+    }
+    return dp[n-1][3];
+}
+
+4) Space Optimization :
+
+int ninjaTraining(int n, vector<vector<int>> &points)
+{
+    vector<int> prev(4,0);
+    prev[0] = max(points[0][1], points[0][2]);
+    prev[1] = max(points[0][0], points[0][2]);
+    prev[2] = max(points[0][0], points[0][1]);
+    prev[3] = max(points[0][0], max(points[0][1], points[0][2]));
+    
+    for(int i=1;i<n;i++)
+    {
+        vector<int> temp(4,0);
+        for(int l=0;l<4;l++)
+        {
+            temp[l]=0;
+            for(int t=0;t<3;t++)
+            {
+                if(l!=t)
+                {
+                    temp[l] = max(temp[l], points[i][t] + prev[t]);
+                }
+            }
+        }
+       prev = temp; 
+    }
+    return prev[3];
+}
