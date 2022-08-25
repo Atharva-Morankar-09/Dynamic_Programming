@@ -1,6 +1,10 @@
 
 GFG - https://practice.geeksforgeeks.org/problems/minimum-sum-partition3317/1
 
+// S = s1+s2 = s1+S-s1 
+   Abs Min Diff = S-s1-s1 = S-2s1 
+   As S>=2s1, Thus we need s1 such that its less than or equal to half of sum
+
 class Solution{
   public:
     int rec(int n, int arr[], int sum)
