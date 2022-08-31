@@ -1,0 +1,68 @@
+
+Leetcode - https://leetcode.com/problems/target-sum/
+
+1) Recursion :
+
+class Solution {
+public:
+    
+    void rec(int i, int& ans, vector<int>& nums, int t, int val)
+    {
+        if(i==nums.size())
+        {
+            if(t==val)
+            {ans++;}
+            return ;
+        }
+        
+        rec(i+1,ans,nums,t,val+nums[i]);
+        rec(i+1,ans,nums,t,val-nums[i]);
+    }
+    
+    int findTargetSumWays(vector<int>& nums, int target) {
+        int ans=0;
+        rec(0,ans,nums,target,0);
+        return ans;
+    }
+};
+
+2) Tabulation : 
+
+class Solution {
+public:
+    
+    int tab(vector<int>& nums, int t, int sum)
+    {
+        int n=nums.size();
+        vector<vector<int>> dp(n+1, vector<int>(sum+1,0));
+        dp[0][0]=1;
+        for(int i=1;i<=n;i++)
+        {
+            for(int j=0;j<=sum;j++)
+            {
+                if(nums[i-1]<=j)
+                {
+                    dp[i][j] = dp[i-1][j-nums[i-1]] + dp[i-1][j];
+                }
+                else
+                {
+                    dp[i][j] = dp[i-1][j];
+                }
+            }
+        }
+       return dp[n][sum]; 
+    }
+    
+    int findTargetSumWays(vector<int>& nums, int t) {
+        int s=0;
+        for(auto it:nums)
+        {
+            s+=it;
+        }
+        if(t>s || (s-t)%2!=0)
+        {
+            return 0;
+        }
+        return tab(nums,t,(s-t)/2);
+    }
+};
