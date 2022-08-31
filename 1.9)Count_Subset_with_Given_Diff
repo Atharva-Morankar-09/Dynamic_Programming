@@ -1,0 +1,86 @@
+
+CodeStudio - https://www.codingninjas.com/codestudio/problems/partitions-with-given-difference_3751628?leftPanelTab=0
+
+int rec(int n, vector<int>& arr, int sum)
+{
+    const int mod = 1e9+7;
+    int dp[n+1][sum+1];
+    for(int i=0;i<=n;i++)
+    {
+        for(int j=0;j<=sum;j++)
+        {
+            if(i==0)
+            {
+                dp[i][j]=0;
+            }
+            if(j==0)
+            {
+                dp[i][j]=1;
+            }
+        }
+    }
+    
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=0;j<=sum;j++)
+        {
+            if(arr[i-1]<=j)
+            {
+                dp[i][j] = (dp[i-1][j-arr[i-1]] + dp[i-1][j])%mod;
+            }
+            else
+            {
+                dp[i][j]=dp[i-1][j];
+            }
+        }
+    }
+    
+   return dp[n][sum];
+}
+
+int countPartitions(int n, int d, vector<int> &arr) {
+    int sum=0;
+    for(int i=0;i<n;i++)
+    {
+        sum+=arr[i];
+    }
+    if((sum+d)%2!=0 || d>sum){return 0;}
+    int reqSum=(sum+d)/2;
+    return rec(n,arr,reqSum);
+}
+
+Less lines :
+
+
+int rec(int n, vector<int>& arr, int sum)
+{
+    vector<vector<int>> dp(n+1,vector<int> (sum+1,0));
+    const int mod = 1e9+7;
+    dp[0][0]=1;
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=0;j<=sum;j++)
+        {
+            if(arr[i-1]<=j)
+            {
+                dp[i][j] = (dp[i-1][j-arr[i-1]] + dp[i-1][j])%mod;
+            }
+            else
+            {
+                dp[i][j]=dp[i-1][j];
+            }
+        }
+    }    
+   return dp[n][sum]; 
+}
+
+int countPartitions(int n, int d, vector<int> &arr) {
+    int sum=0;
+    for(int i=0;i<n;i++)
+    {
+        sum+=arr[i];
+    }
+    if((sum+d)%2!=0 || d>sum){return 0;}
+    int reqSum=(sum+d)/2;
+    return rec(n,arr,reqSum);
+}
