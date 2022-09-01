@@ -60,7 +60,7 @@ S.C. - O((n-1)+(m-1)) + O(n*m)
 3) Tabulation :
 
 int uniquePaths(int m, int n) {
-	int dp[m][n];
+    int dp[m][n];
     for(int i=0;i<m;i++)
     {
         for(int j=0;j<n;j++)
@@ -93,7 +93,7 @@ int uniquePaths(int m, int n) {
 4) Space Optimization :
 
 int uniquePaths(int m, int n) {
-	vector<int> prev(n);
+    vector<int> prev(n);
     for(int i=0;i<m;i++)
     {
         vector<int> curr(n);
