@@ -1,0 +1,147 @@
+
+CodeStudio - https://www.codingninjas.com/codestudio/problems/minimum-path-sum_985349?leftPanelTab=1
+
+1) Recursion :
+TLE
+
+#include<bits/stdc++.h>
+int rec(int n, int m, vector<vector<int>>& grid)
+{
+    if(n==0 && m==0)
+    {
+        return grid[n][m];
+    }
+    if(n<0 || m<0)
+    {
+        return 1e9;
+    }
+    int up = grid[n][m] + rec(n-1,m,grid);
+    int left = grid[n][m] + rec(n,m-1,grid);
+    return min(up,left);
+}
+
+int minSumPath(vector<vector<int>> &grid) {
+    int n=grid.size();
+    int m=grid[0].size();
+    return rec(n-1,m-1,grid);
+}
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2) Memoization :
+
+#include<bits/stdc++.h>
+int rec(int n, int m, vector<vector<int>>& grid, vector<vector<int>>& dp)
+{
+    if(n==0 && m==0)
+    {
+        return grid[n][m];
+    }
+    if(n<0 || m<0)
+    {
+        return 1e9;
+    }    
+    if(dp[n][m]!=-1)
+    {
+        return dp[n][m];
+    }
+    
+    int up = grid[n][m] + rec(n-1,m,grid,dp);
+    int left = grid[n][m] + rec(n,m-1,grid,dp);
+    return dp[n][m]=min(up,left);
+}
+
+int minSumPath(vector<vector<int>> &grid) {
+    int n=grid.size();
+    int m=grid[0].size();
+    vector<vector<int>> dp(n,vector<int>(m,-1));
+    return rec(n-1,m-1,grid,dp);
+}
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+3) Tabulation :
+
+int minSumPath(vector<vector<int>> &grid) {
+    int n=grid.size();
+    int m=grid[0].size();
+    int dp[n+1][m+1];
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<m;j++)
+        {
+            if(i==0 && j==0)
+            {
+                dp[i][j]=grid[i][j];
+            }
+            else
+            {
+                int up=grid[i][j];
+                int left=grid[i][j];
+                if(i>0)
+                {
+                    up+=dp[i-1][j];
+                }
+                else
+                {
+                    up+=1e9;
+                }
+                if(j>0)
+                {
+                    left+=dp[i][j-1];
+                }
+                else
+                {
+                    left+=1e9;
+                }
+                dp[i][j]=min(up,left);
+            }
+        }
+    }
+   return dp[n-1][m-1]; 
+}
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+4) Space Optimization :
+
+int minSumPath(vector<vector<int>> &grid) {
+    int n=grid.size();
+    int m=grid[0].size();
+    vector<int> prev(m);
+    for(int i=0;i<n;i++)
+    {
+        vector<int> curr(m);
+        for(int j=0;j<m;j++)
+        {
+            if(i==0 && j==0)
+            {
+                curr[j]=grid[i][j];
+            }
+            else
+            {
+                int up=grid[i][j];
+                int left=grid[i][j];
+                if(i>0)
+                {
+                    up+=prev[j];
+                }
+                else
+                {
+                    up+=1e9;
+                }
+                if(j>0)
+                {
+                    left+=curr[j-1];
+                }
+                else
+                {
+                    left+=1e9;
+                }
+                curr[j]=min(up,left);
+            }
+        }
+        prev=curr; 
+    }
+   return prev[m-1]; 
+}
