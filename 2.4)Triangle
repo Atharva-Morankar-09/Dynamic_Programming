@@ -2,6 +2,7 @@
 CodeStudio - https://www.codingninjas.com/codestudio/problems/triangle_1229398?leftPanelTab=0
 
 1) Recursion :
+TLE
 
 #include<bits/stdc++.h>
 int rec(int i, int j, vector<vector<int>> triangle, int n)
@@ -24,6 +25,7 @@ int minimumPathSum(vector<vector<int>>& triangle, int n){
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 2) Memoization :
+TLE
 
 #include<bits/stdc++.h>
 int rec(int i, int j, vector<vector<int>> triangle, int n, vector<vector<int>>& dp)
