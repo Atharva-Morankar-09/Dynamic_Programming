@@ -1,0 +1,93 @@
+
+Leetcode - https://leetcode.com/problems/longest-common-subsequence/
+
+1) Recursion :
+
+class Solution {
+public:
+    
+    int rec(int i, int j, string x, string y)
+    {
+        if(i==0 || j==0)
+        {
+            return 0;
+        }
+        
+        if(x[i-1]==y[j-1])
+        {
+            return 1+rec(i-1,j-1,x,y);
+        }
+        else
+        {
+            return max(rec(i,j-1,x,y),rec(i-1,j,x,y));
+        }        
+       return 0; 
+    }
+    
+    int longestCommonSubsequence(string s1, string s2) {
+        return (rec(s1.size(),s2.size(),s1,s2));
+    }
+};
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2) Memoization : 
+
+class Solution {
+public:
+    
+    int rec(int i, int j, string x, string y, vector<vector<int>>& dp)
+    {
+        if(i==0 || j==0)
+        {
+            return 0;
+        }
+        
+        if(dp[i-1][j-1]!=-1)
+        {
+            return dp[i-1][j-1];
+        }
+        
+        if(x[i-1]==y[j-1])
+        {
+            return dp[i-1][j-1]=1+rec(i-1,j-1,x,y,dp);
+        }
+        else
+        {
+            return dp[i-1][j-1]=max(rec(i,j-1,x,y,dp),rec(i-1,j,x,y,dp));
+        }        
+       return 0; 
+    }
+    
+    int longestCommonSubsequence(string s1, string s2) {
+        vector<vector<int>> dp(s1.size()+1, vector<int> (s2.size(),-1));
+        return (rec(s1.size(),s2.size(),s1,s2, dp));
+    }
+};
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+3) Tabulation : 
+
+class Solution {
+public:
+    int longestCommonSubsequence(string s1, string s2) {
+        int n=s1.size(),m=s2.size();
+        vector<vector<int>> dp(n+1, vector<int> (m+1,0));
+        for(int i=1;i<=n;i++)
+        {
+            for(int j=1;j<=m;j++)
+            {
+                if(s1[i-1]==s2[j-1])
+                {
+                    dp[i][j]=1+dp[i-1][j-1];
+                }
+                else
+                {
+                    dp[i][j]=max(dp[i-1][j], dp[i][j-1]);
+                }
+            }
+        }
+      return dp[n][m];  
+    }
+};
