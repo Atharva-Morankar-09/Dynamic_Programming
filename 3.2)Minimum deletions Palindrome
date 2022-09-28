@@ -1,0 +1,59 @@
+
+GFG - https://practice.geeksforgeeks.org/problems/minimum-number-of-deletions4610/1
+
+1) Memoization - 
+
+int rec(string& x, string& y, int i, int j, vector<vector<int>>& dp)
+{
+    if(i==0 || j==0)
+    {
+        return 0;
+    }
+    
+    if(dp[i][j]!=-1)
+    {
+        return dp[i][j];
+    }
+    if(x[i-1]==y[j-1])
+    {
+        return dp[i][j] = 1 + rec(x,y,i-1,j-1,dp);
+    }
+    else
+    {
+        return dp[i][j] = max(rec(x,y,i-1,j,dp), rec(x,y,i,j-1,dp));
+    }
+}
+
+int minDeletions(string str, int n) { 
+    string s1=str;
+    reverse(str.begin(),str.end());
+    vector<vector<int>> dp(n+1, vector<int> (n+1,-1));
+    return n - rec(s1,str,n,n,dp);
+} 
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2) Tabulation - 
+
+
+int minDeletions(string str, int n) { 
+    vector<vector<int>> dp(n+1, vector<int>(n+1,0));
+    string s1=str;
+    reverse(str.begin(),str.end());
+    string s2=str;
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=1;j<=n;j++)
+        {
+            if(s1[i-1]==s2[j-1])
+            {
+                dp[i][j] = 1 + dp[i-1][j-1];
+            }
+            else
+            {
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+            }
+        }
+    }
+    return n-dp[n][n];
+} 
