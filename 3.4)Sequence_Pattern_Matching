@@ -1,0 +1,64 @@
+
+Leetcode - https://leetcode.com/problems/is-subsequence/
+
+1) Recursion:
+
+class Solution {
+public:
+    
+    bool rec(int i, int j, string s1, string s2)
+    {
+        if(j==s2.size() && i!=s1.size())
+        {
+            return false;
+        }
+        if(i==s1.size())
+        {
+            return true;
+        }
+        
+        if(s1[i]==s2[j])
+        {
+            return rec(i+1,j+1,s1,s2);
+        }
+        else
+        {
+            return rec(i,j+1,s1,s2);
+        }
+       return false; 
+    }
+    
+    bool isSubsequence(string s, string t) {
+        return rec(0, 0, s, t);
+    }
+};
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2) Tabulation:
+
+class Solution {
+public:
+    bool isSubsequence(string s, string t) {
+        int n=s.size();
+        int m=t.size();
+        
+        vector<vector<int>> dp(n+1, vector<int> (m+1, 0));
+        
+        for(int i=1;i<=n;i++)
+        {
+            for(int j=1;j<=m;j++)
+            {
+                if(s[i-1]==t[j-1])
+                {
+                    dp[i][j]=1+dp[i-1][j-1];
+                }
+                else
+                {
+                    dp[i][j]=max(dp[i-1][j], dp[i][j-1]);
+                }
+            }
+        }
+      return n==dp[n][m];  
+    }
+};
