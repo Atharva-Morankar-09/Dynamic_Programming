@@ -1,0 +1,72 @@
+
+GFG - https://practice.geeksforgeeks.org/problems/matrix-chain-multiplication0303/1
+
+1) Recursion -
+
+// User function Template for C++
+
+class Solution{
+public:
+
+    int rec(int i, int j, int arr[])
+    {
+        if(i==j)
+        {
+            return 0;
+        }
+        
+        int ans=INT_MAX;
+        int val=0;
+        
+        for(int k=i;k<=j-1;k++)
+        {
+            val = rec(i,k,arr) + rec(k+1,j,arr) + arr[i-1]*arr[k]*arr[j];
+            ans=min(ans,val);
+        }
+      return ans;    
+    }
+
+    int matrixMultiplication(int N, int arr[])
+    {
+        return rec(1, N-1, arr);
+    }
+};
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2) Memoization -
+
+// User function Template for C++
+
+class Solution{
+public:
+
+    int rec(int i, int j, int arr[], vector<vector<int>>& dp, int N)
+    {
+        if(i==j)
+        {
+            return 0;
+        }
+        
+        if(dp[i][j]!=-1)
+        {
+            return dp[i][j];
+        }
+        
+        dp[i][j]=INT_MAX;
+        int val=0;
+        
+        for(int k=i;k<=j-1;k++)
+        {
+            val = rec(i,k,arr,dp, N) + rec(k+1,j,arr,dp, N) + arr[i-1]*arr[k]*arr[j];
+            dp[i][j]=min(dp[i][j],val);
+        }
+      return dp[i][j];    
+    }
+
+    int matrixMultiplication(int N, int arr[])
+    {
+        vector<vector<int>> dp(N, vector<int> (N,-1));
+        return rec(1, N-1, arr, dp, N);
+    }
+};
