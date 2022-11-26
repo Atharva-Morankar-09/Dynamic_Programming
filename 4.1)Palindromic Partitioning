@@ -1,0 +1,121 @@
+
+GFG - https://practice.geeksforgeeks.org/problems/palindromic-patitioning4845/1
+
+1) Recursion -
+
+// User function Template for C++
+
+class Solution{
+public:
+
+    bool isPalindrome(int i, int j, string s)
+    {
+        while(i<j)
+        {
+            if(s[i]!=s[j])
+            {
+                return false;
+            }
+          i++,j--;    
+        }
+      return true;    
+    }
+
+    int rec(int i, int j, string s)
+    {
+        if(i==j)
+        {
+            return 0;
+        }
+        
+        if(isPalindrome(i,j,s)==true)
+        {
+            return 0;
+        }
+        
+        int ans=INT_MAX;
+        int val=0;
+        
+        for(int k=i;k<=j-1;k++)
+        {
+            val = rec(i,k,s) + rec(k+1,j,s) + 1;
+            ans = min(ans,val);
+        }
+      return ans;    
+    }
+
+    int palindromicPartition(string str)
+    {
+        return rec(0,str.size()-1,str);
+    }
+};
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2) Memoization -
+
+// User function Template for C++
+
+class Solution{
+public:
+
+    bool isPalindrome(int i, int j, string& s)
+    {
+        while(i<j)
+        {
+            if(s[i]!=s[j])
+            {
+                return false;
+            }
+          i++,j--;    
+        }
+      return true;    
+    }
+
+    int rec(int i, int j, string& s, vector<vector<int>>& dp)
+    {
+        if(i==j)
+        {
+            return 0;
+        }
+        
+        if(dp[i][j]!=-1)
+        {
+            return dp[i][j];
+        }
+        
+        if(isPalindrome(i,j,s)==true)
+        {
+            return 0;
+        }
+        
+        dp[i][j]=INT_MAX;
+        int val=0;
+        
+        for(int k=i;k<=j-1;k++)
+        {
+            val = rec(i,k,s,dp) + rec(k+1,j,s,dp) + 1;
+            dp[i][j] = min(dp[i][j],val);
+        }
+      return dp[i][j];    
+    }
+
+    int palindromicPartition(string str)
+    {
+        int n=str.size();
+        vector<vector<int>> dp(n, vector<int>(n,-1));
+        return rec(0,str.size()-1,str, dp);
+    }
+};
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Note - 
+During passing by value, copy of the same is created during function call while receiving the arguments, in memory.
+Copy of an integer, char, etc are not costly, but for a string suppose it has a total of 10000 characters then those
+many numbers of copies will be created and it will take a large amount of time. On the other hand, if you pass by reference 
+then only the address of that particular memory block is passed basically the address of the first character, it doesn't 
+create any copy rather it works just by having the reference, no extra time consumption due to creation of copies in passing 
+by reference.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
