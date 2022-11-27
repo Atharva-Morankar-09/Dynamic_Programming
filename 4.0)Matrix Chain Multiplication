@@ -3,8 +3,6 @@ GFG - https://practice.geeksforgeeks.org/problems/matrix-chain-multiplication030
 
 1) Recursion -
 
-// User function Template for C++
-
 class Solution{
 public:
 
@@ -35,8 +33,6 @@ public:
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 2) Memoization -
-
-// User function Template for C++
 
 class Solution{
 public:
