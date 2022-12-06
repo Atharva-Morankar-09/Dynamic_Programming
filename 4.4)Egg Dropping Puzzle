@@ -1,0 +1,64 @@
+
+GFG - https://practice.geeksforgeeks.org/problems/egg-dropping-puzzle-1587115620/1
+ 
+1) Recursion - 
+ 
+class Solution
+{
+    public:
+    
+    int rec(int e, int f){
+        if(f==0 || f==1 || e==1){
+            return f;
+        }
+        
+        int ans=INT_MAX;
+        
+        for(int i=1;i<f;i++){
+            int attempts = 1 + max(rec(e-1,i-1),rec(e,f-i));
+            ans=min(ans,attempts);
+        }
+      return ans;    
+    }
+    
+    int eggDrop(int n, int k) 
+    {
+        return rec(n,k);
+    }
+};
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 
+2) Memoization - 
+
+class Solution
+{
+    public:
+    
+    int rec(int e, int f, vector<vector<int>>& dp)
+    {
+        if(f==0 || f==1 || e==1){
+            return f;
+        }
+        
+        if(dp[e][f]!=-1){
+            return dp[e][f];
+        }
+        
+        int ans=INT_MAX;
+        
+        for(int i=1;i<=f;i++){
+            int attempts = 1 + max(rec(e-1,i-1,dp),rec(e,f-i,dp));
+            ans=min(ans,attempts);
+        }
+      return dp[e][f]=ans;    
+    }
+    
+    int eggDrop(int n, int k) 
+    {
+        vector<vector<int>> dp(201, vector<int>(201,-1));
+        return rec(n,k,dp);
+    }
+};
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
