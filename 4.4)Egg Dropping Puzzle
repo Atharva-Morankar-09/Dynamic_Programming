@@ -45,7 +45,7 @@ class Solution
         
         int ans=INT_MAX;
         
-        for(int i=1;i<=f;i++){
+        for(int i=1;i<f;i++){
             int attempts = 1 + max(rec(e-1,i-1,dp),rec(e,f-i,dp));
             ans=min(ans,attempts);
         }
