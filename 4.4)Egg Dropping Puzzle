@@ -5,8 +5,7 @@ GFG - https://practice.geeksforgeeks.org/problems/egg-dropping-puzzle-1587115620
  
 class Solution
 {
-    public:
-    
+    public:    
     int rec(int e, int f){
         if(f==0 || f==1 || e==1){
             return f;
@@ -34,7 +33,6 @@ class Solution
 class Solution
 {
     public:
-    
     int rec(int e, int f, vector<vector<int>>& dp)
     {
         if(f==0 || f==1 || e==1){
