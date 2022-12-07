@@ -1,0 +1,25 @@
+
+Question Link - https://leetcode.com/problems/diameter-of-binary-tree/
+
+class Solution {
+public:    
+    int rec(TreeNode* curr, int& res){
+        if(curr==NULL){
+           return 0;
+        }
+        int lt = rec(curr->left,res);
+        int rt = rec(curr->right,res);
+            
+        int temp = max(lt,rt)+1;
+        int ans = max(temp,lt+rt+1);
+        res = max(ans,res);
+       
+      return temp; 
+    }
+    
+    int diameterOfBinaryTree(TreeNode* root) {
+        int res=INT_MIN;
+        rec(root,res);
+        return res-1;
+    }
+};
