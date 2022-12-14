@@ -1,0 +1,57 @@
+
+Leetcode Link - https://leetcode.com/problems/house-robber/
+
+1) Recursion : 
+
+class Solution {
+public:
+    
+    int rec(int i, vector<int>& nums){
+        if(i==nums.size()-1){
+            return nums[nums.size()-1];
+        }
+        if(i>=nums.size()){
+            return 0;
+        }
+        
+        int take = nums[i] + rec(i+2,nums);
+        int notTake = rec(i+1,nums);
+        
+       return max(take,notTake); 
+    }
+    
+    int rob(vector<int>& nums) {
+       return rec(0,nums); 
+    }
+};
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2) Memoization :
+
+class Solution {
+public:    
+    int rec(int i, vector<int>& nums, vector<int>& dp){
+        if(i==nums.size()-1){
+            return nums[nums.size()-1];
+        }
+        if(i>=nums.size()){
+            return 0;
+        }
+        
+        if(dp[i]!=-1){
+            return dp[i];
+        }
+        
+        int take = nums[i] + rec(i+2,nums,dp);
+        int notTake = rec(i+1,nums,dp);
+        
+       return dp[i] = max(take,notTake); 
+    }
+    
+    int rob(vector<int>& nums) {
+        int n=nums.size();
+        vector<int> dp(n+1,-1);
+       return rec(0,nums,dp); 
+    }
+};
