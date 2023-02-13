@@ -1,0 +1,18 @@
+
+GFG Link - https://practice.geeksforgeeks.org/problems/51b266505221b97522b1d2c86ddad1868a54831b/1
+
+class Solution{   
+public:
+    int minCost(vector<vector<int>> &color, int N) {
+        int x=color[0][0];
+        int y=color[0][1];
+        int z=color[0][2];
+        for(int i=1;i<N;i++){
+            int x1=color[i][0]+min(y,z);
+            int y1=color[i][1]+min(x,z);
+            int z1=color[i][2]+min(x,y);
+            x=x1,y=y1,z=z1;
+        }
+      return min(x,min(y,z));    
+    }
+};
