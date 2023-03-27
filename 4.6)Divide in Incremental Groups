@@ -1,0 +1,59 @@
+
+GFG Link - https://practice.geeksforgeeks.org/problems/c239059f6d110e6778cc2f2a1ab58ffd0a3d64ca/1
+
+1) Recursion - 
+
+class Solution {
+  public:
+    
+    int rec(int sum, int cnt, int prev){
+        int ans=0;
+        if(sum==0 && cnt==0){
+            return 1;
+        }
+        if(sum==0 || cnt==0){
+            return 0;
+        }
+        
+        for(int i=prev;i<=sum;i++){
+            ans+=rec(sum-i,cnt-1,i);
+        }
+      return ans;    
+    }
+  
+    int countWaystoDivide(int N, int K) {
+        return rec(N,K,1);
+    }
+};
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2) Memoization -
+
+class Solution {
+  public:
+    
+    int rec(int sum, int cnt, int prev, vector<vector<vector<int>>>& dp){
+        
+        if(sum==0 && cnt==0){
+            return 1;
+        }
+        if(sum==0 || cnt==0){
+            return 0;
+        }
+        
+        if(dp[sum][prev][cnt]!=-1){
+            return dp[sum][prev][cnt];
+        }
+        int ans=0;
+        for(int i=prev;i<=sum;i++){
+            ans+=rec(sum-i,cnt-1,i,dp);
+        }
+      return dp[sum][prev][cnt]=ans;    
+    }
+  
+    int countWaystoDivide(int N, int K) {
+        vector<vector<vector<int>>> dp(N+1, vector<vector<int>>(N+1, vector<int> (K+1,-1)));
+        return rec(N,K,1,dp);
+    }
+};
