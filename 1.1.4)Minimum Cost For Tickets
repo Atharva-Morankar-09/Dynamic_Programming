@@ -1,0 +1,79 @@
+
+Leetcode - https://leetcode.com/problems/minimum-cost-for-tickets/
+
+1) Recursion - 
+
+class Solution {
+public:
+    
+    int rec(vector<int>& days, vector<int>& costs, int i){
+        if(i>=days.size()){
+            return 0;
+        }
+        
+        int c1 = costs[0] + rec(days,costs,i+1);
+        
+        int k=i;
+        for(k;k<days.size();k++){
+            if(days[k]>=days[i]+7){
+                break;
+            }
+        }
+        int c2 = costs[1] + rec(days,costs,k);
+        
+        for(k;k<days.size();k++){
+            if(days[k]>=days[i]+30){
+                break;
+            }
+        }
+        int c3 = costs[2] + rec(days,costs,k);
+        
+       return min(c1,min(c2,c3)); 
+    }
+    
+    int mincostTickets(vector<int>& days, vector<int>& costs) {
+        return rec(days,costs,0);
+    }
+};
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2) Memoization -
+
+class Solution {
+public:
+    
+    int rec(vector<int>& days, vector<int>& costs, int i, vector<int>& dp){
+        if(i>=days.size()){
+            return 0;
+        }
+        
+        if(dp[i]!=-1){
+            return dp[i];
+        }
+        
+        int c1 = costs[0] + rec(days,costs,i+1,dp);
+        
+        int k=i;
+        for(k;k<days.size();k++){
+            if(days[k]>=days[i]+7){
+                break;
+            }
+        }
+        int c2 = costs[1] + rec(days,costs,k,dp);
+        
+        for(k;k<days.size();k++){
+            if(days[k]>=days[i]+30){
+                break;
+            }
+        }
+        int c3 = costs[2] + rec(days,costs,k,dp);
+        
+       return dp[i] = min(c1,min(c2,c3)); 
+    }
+    
+    int mincostTickets(vector<int>& days, vector<int>& costs) {
+        vector<int> dp(days.size()+1,-1);
+        return rec(days,costs,0,dp);
+    }
+};
