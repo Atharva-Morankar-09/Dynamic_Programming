@@ -1,0 +1,29 @@
+
+Leetcode - https://leetcode.com/problems/reducing-dishes/
+
+class Solution {
+public:
+    
+    int rec(vector<int>& sat, vector<vector<int>>& dp, int i, int time){
+        if(i==sat.size()){
+            return 0;
+        }
+        
+        if(dp[i][time]!=-1){
+            return dp[i][time];
+        }
+        
+        int cnt = sat[i]*time + rec(sat,dp,i+1,time+1);
+        int notCnt = rec(sat,dp,i+1,time);
+        
+      return dp[i][time] = max(cnt,notCnt);  
+    }
+    
+    int maxSatisfaction(vector<int>& sat) {
+        sort(sat.begin(),sat.end());
+        int n=sat.size();
+        vector<vector<int>> dp(n+1, vector<int> (n+1,-1));
+        
+        return rec(sat,dp,0,1);
+    }
+};
