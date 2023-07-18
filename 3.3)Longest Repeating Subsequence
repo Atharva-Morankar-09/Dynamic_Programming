@@ -1,7 +1,56 @@
 
 GFG - https://practice.geeksforgeeks.org/problems/longest-repeating-subsequence2004/1
 
-1) Tabulation:
+1) Recursion (TLE):
+class Solution {
+	public:	    
+	    int rec(int i, int j, string s){
+	        if(i>s.size() || j>s.size()){
+	            return 0;
+	        }
+	        
+	        if(s[i]==s[j] && i!=j){
+	            return 1 + rec(i+1,j+1,s);
+	        }
+	       return max(rec(i+1,j,s), rec(i,j+1,s)); 
+	    }
+	
+		int LongestRepeatingSubsequence(string str){
+		    int ans = rec(0,0,str);
+		   return ans; 
+		}
+};
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2) Memoization:
+class Solution {
+	public:	    
+	    int rec(int i, int j, string& s, vector<vector<int>>& dp){
+	        if(i>=s.size() || j>=s.size()){
+	            return 0;
+	        }
+	        
+	        if(dp[i][j]!=-1){
+	            return dp[i][j];
+	        }
+	        
+	        if(s[i]==s[j] && i!=j){
+	            return dp[i][j] = 1 + rec(i+1,j+1,s,dp);
+	        }
+	       return dp[i][j] = max(rec(i+1,j,s,dp), rec(i,j+1,s,dp)); 
+	    }
+	
+		int LongestRepeatingSubsequence(string str){
+		     int n=str.size();
+		     vector<vector<int>> dp(n, vector<int> (n,-1));
+		     return rec(0,0,str,dp);
+		}
+};
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+3) Tabulation:
 
 class Solution {
 	public:
@@ -9,8 +58,8 @@ class Solution {
 	    int n=str.size();
 	    vector<vector<int>> dp(n+1, vector<int>(n+1,0));
 	
-	   // run a loop through same string and if same character appears again but at diff position then increment by 1. 
-           // If at same location then it means it doesnt repeat, hence dont increment.
+	   //Run a loop through the same string and if the same character appears again but at diff position then increment by 1. 
+           // If at same location then it means it doesn't repeat, hence don't increment.
 	    for(int i=1;i<=n;i++)
             {
 	        for(int j=1;j<=n;j++)
@@ -28,3 +77,5 @@ class Solution {
       return dp[n][n]; 
       }
 };
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
