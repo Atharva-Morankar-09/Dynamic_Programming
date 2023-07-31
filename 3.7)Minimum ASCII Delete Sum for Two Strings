@@ -1,0 +1,87 @@
+
+Leetcode Link - https://leetcode.com/problems/minimum-ascii-delete-sum-for-two-strings/submissions/
+
+1) Recursion -
+
+class Solution {
+public:
+    
+    int rec(string s1, string s2, int n1, int n2){
+        if(n1<0){
+            int ans=0;
+            for(int z=0;z<=n2;z++){
+                ans+=int(s2[z]);
+            }
+           return ans; 
+        }
+        
+        if(n2<0){
+            int ans=0;
+            for(int z=0;z<=n1;z++){
+                ans+=int(s1[z]);
+            }
+           return ans; 
+        }
+        
+        if(s1[n1]==s2[n2]){
+            return rec(s1,s2,n1-1,n2-1);
+        }
+        else{
+            return min( int(s1[n1])+rec(s1,s2,n1-1,n2), min(int(s2[n2])+rec(s1,s2,n1,n2-1), int(s1[n1]) + int(s2[n2]) + rec(s1,s2,n1-1,n2-1)));
+        }
+    }
+    
+    int minimumDeleteSum(string s1, string s2) {
+        int n1=s1.size();
+        int n2=s2.size();
+        
+        return rec(s1,s2,n1-1,n2-1);
+    }
+};
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2) Memoization -
+
+class Solution {
+public:
+    
+    long long rec(string& s1, string& s2, int n1, int n2, vector<vector<int>>& dp){
+        if(n1<0){
+            long long ans=0;
+            for(int z=0;z<=n2;z++){
+                ans+=int(s2[z]);
+            }
+           return ans; 
+        }
+        
+        if(n2<0){
+            long long ans=0;
+            for(int z=0;z<=n1;z++){
+                ans+=int(s1[z]);
+            }
+           return ans; 
+        }
+        
+        if(dp[n1][n2]!=-1){
+            return dp[n1][n2];
+        }
+        
+        long long ans=INT_MAX;
+        if(s1[n1]==s2[n2]){
+            ans = rec(s1,s2,n1-1,n2-1,dp);
+        }
+        else{
+            ans = min( int(s1[n1])+rec(s1,s2,n1-1,n2,dp), min(int(s2[n2])+rec(s1,s2,n1,n2-1,dp), int(s1[n1]) + int(s2[n2]) + rec(s1,s2,n1-1,n2-1,dp)));
+        }
+       return dp[n1][n2]=ans; 
+    }
+    
+    int minimumDeleteSum(string s1, string s2) {
+        int n1=s1.size();
+        int n2=s2.size();
+        vector<vector<int>> dp(n1, vector<int> (n2,-1));
+        
+        return rec(s1,s2,n1-1,n2-1,dp);
+    }
+};
