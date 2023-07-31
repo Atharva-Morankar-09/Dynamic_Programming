@@ -1,0 +1,55 @@
+
+Leetcode Link - https://leetcode.com/problems/predict-the-winner/
+
+1) Recursion -
+
+class Solution {
+public:
+    
+    int maxDiff(vector<int>& nums, int left, int right){
+        if(left==right){
+            return nums[left];
+        }
+        
+        int scoreL = nums[left] - maxDiff(nums,left+1,right);
+        int scoreR = nums[right] - maxDiff(nums,left,right-1);
+        
+       return max(scoreL, scoreR); 
+    }
+    
+    bool PredictTheWinner(vector<int>& nums) {
+        int n=nums.size();
+        
+        return maxDiff(nums,0,n-1)>=0;
+    }
+};
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2) Memoization - 
+
+class Solution {
+public:
+    
+    int maxDiff(vector<int>& nums, int left, int right, vector<vector<int>>& dp){
+        
+        if(dp[left][right]!=INT_MIN){
+            return dp[left][right];
+        }
+        
+        if(left==right){
+            return nums[left];
+        }
+        
+        int scoreL = nums[left] - maxDiff(nums,left+1,right,dp);
+        int scoreR = nums[right] - maxDiff(nums,left,right-1,dp);
+        
+       return dp[left][right] = max(scoreL, scoreR); 
+    }
+    
+    bool PredictTheWinner(vector<int>& nums) {
+        int n=nums.size();
+        vector<vector<int>> dp(n, vector<int> (n,INT_MIN));
+        return maxDiff(nums,0,n-1,dp)>=0;
+    }
+};
