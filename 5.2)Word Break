@@ -1,0 +1,37 @@
+
+Leetcode Link - https://leetcode.com/problems/word-break/
+
+1) Memoization - 
+
+class Solution {
+public: 
+    bool rec(string s, unordered_set<string>& st, unordered_map<string,bool>& dp){
+        if(s.length()==0){
+            return true;
+        }
+        
+        if(dp.find(s)!=dp.end()){
+            return dp[s];
+        }
+        
+        for(int i=0;i<s.length();i++){
+            string s1 = s.substr(0,i+1);
+            if(st.count(s1)){
+                if(rec(s.substr(i+1),st,dp)){
+                   return dp[s]=true;
+                }
+            }
+        }
+       return dp[s]=false; 
+    }
+    
+    bool wordBreak(string s, vector<string>& wordDict) {
+        unordered_set<string> st;
+        unordered_map<string, bool> dp;
+        for(auto w:wordDict){
+            st.insert(w);
+        }
+        
+        return rec(s,st,dp);
+    }
+};
